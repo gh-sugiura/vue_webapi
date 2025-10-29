@@ -29,6 +29,10 @@ export const useWeatherStore = defineStore("weather", {
 			this.cityList.set("Aichi",
 				{ name: "愛知", q: "Aichi" }
 			);
+
+			this.cityList.set("Shizuoka",
+				{ name: "静岡", q: "Shizuoka" }
+			);
 		}
 	}
 });

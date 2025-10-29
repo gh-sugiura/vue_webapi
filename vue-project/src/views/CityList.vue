@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useWeatherStore } from '@/stores/weather';
-import type { City, State } from "@/interfaces/city"; 
+import type { City } from "@/interfaces/city"; 
 
 
 const weatherStore = useWeatherStore();
