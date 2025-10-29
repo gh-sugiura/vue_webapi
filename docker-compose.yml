@@ -11,10 +11,12 @@ services:
     depends_on:
       - php
 
+
   php:
     build: ./docker/php
     volumes:
       - ./src:/var/www/
+
 
   mysql:
     image: mysql:8.0.26
@@ -29,6 +31,7 @@ services:
       - ./docker/mysql/data:/var/lib/mysql
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
 
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
@@ -40,3 +43,22 @@ services:
       - mysql
     ports:
       - 8080:80
+  
+
+  node:
+    build:
+      context: .
+      dockerfile: ./docker/node/Dockerfile
+    volumes:
+      - ./vue-project:/var/www/vue-project
+      - node_modules_volume:/var/www/vue-project/node_modules
+    working_dir: /var/www/vue-project   # Vue プロジェクトをここに置く想定
+    ports:
+      - "5173:5173"   # Vite dev server
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: ["npm", "run", "dev", "--", "--host"]
+
+
+volumes:
+  node_modules_volume:
