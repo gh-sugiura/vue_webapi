@@ -50,9 +50,9 @@ services:
       context: .
       dockerfile: ./docker/node/Dockerfile
     volumes:
-      - ./frontend/vue-project:/var/www/frontend
-      - node_modules_volume:/var/www/frontend/node_modules
-    working_dir: /var/www/frontend   # Vue プロジェクトをここに置く想定
+      - ./vue-project:/var/www/vue-project
+      - node_modules_volume:/var/www/vue-project/node_modules
+    working_dir: /var/www/vue-project   # Vue プロジェクトをここに置く想定
     ports:
       - "5173:5173"   # Vite dev server
     environment:
