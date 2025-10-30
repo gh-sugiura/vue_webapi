@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { RouterLink } from 'vue-router';
-import { useWeatherStore } from '@/stores/weather';
+import { computed } from "vue";
+import { RouterLink } from "vue-router";
+import { useWeatherStore } from "@/stores/weather";
 import type { City } from "@/interfaces/city"; 
 
 
