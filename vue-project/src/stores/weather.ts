@@ -6,6 +6,9 @@ export const useWeatherStore = defineStore("weather", {
 	state: (): State => {
 		return {
 			cityList: new Map<string, City>(),
+			selectedCity: { name: "", q: "", },
+			isLoading: true,
+			weatherDescription: "",
 		};
 	},
 	
@@ -33,6 +36,10 @@ export const useWeatherStore = defineStore("weather", {
 			this.cityList.set("Shizuoka",
 				{ name: "静岡", q: "Shizuoka" }
 			);
+		},
+
+		async reciveWeatherInfo(id: string) {
+			this.selectedCity = this.cityList.get(id) as City;
 		}
 	}
 });

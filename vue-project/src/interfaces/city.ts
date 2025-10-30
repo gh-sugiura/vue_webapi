@@ -6,4 +6,7 @@ export interface City {
 
 export interface State {
     cityList: Map<string, City>;
+    selectedCity: City;
+    isLoading: boolean;
+    weatherDescription: string;
 };
