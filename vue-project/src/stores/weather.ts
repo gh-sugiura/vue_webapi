@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import type { City, State } from "@/interfaces/city"; 
+// import axios from "axios";
 
 
 export const useWeatherStore = defineStore("weather", {
@@ -40,6 +41,27 @@ export const useWeatherStore = defineStore("weather", {
 
 		async reciveWeatherInfo(id: string) {
 			this.selectedCity = this.cityList.get(id) as City;
+			const WeatherInfoUrl = "https://api.openweathermap.org/data/2.5/weather";
+			const params: {
+				lang: string,
+				q: string,
+				appID: string,
+			} = {
+				lang: "ja",
+				q: this.selectedCity.q,
+				appID: "9d4f3ad159ee25e7bb8a7429ee2ee11",
+			};
+			const queryParams = new URLSearchParams(params);
+			const urlFull = `${WeatherInfoUrl}?${queryParams}`;
+			console.log(urlFull);
+			const response = await fetch(urlFull, {method: "GET"});
+			const weatherInfoJSON = await response.json();
+			// const response = await axios.get(urlFull);
+			// const weatherInfoJSON = await response.data;
+			const weatherArry = weatherInfoJSON.weather;
+			const weather = weatherArry[0];
+			this.weatherDescription = weather.description;
+			this.isLoading = false;
 		}
 	}
 });
