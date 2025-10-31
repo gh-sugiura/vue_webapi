@@ -10,6 +10,7 @@ export const useWeatherStore = defineStore("weather", {
 			selectedCity: { name: "", q: "", },
 			isLoading: true,
 			weatherDescription: "",
+			weatherTemperature: 0,
 		};
 	},
 	
@@ -40,16 +41,19 @@ export const useWeatherStore = defineStore("weather", {
 		},
 
 		async reciveWeatherInfo(id: string) {
+			this.isLoading = true;
 			this.selectedCity = this.cityList.get(id) as City;
 			const WeatherInfoUrl = "https://api.openweathermap.org/data/2.5/weather";
 			const params: {
 				lang: string,
 				q: string,
-				appID: string,
+				appid: string,
+				units: string,
 			} = {
 				lang: "ja",
 				q: this.selectedCity.q,
-				appID: "9d4f3ad159ee25e7bb8a7429ee2ee11",
+				appid: "9d4f3ad1591ee25e7bb8a7429ee2ee11",
+				units: "metric",
 			};
 			const queryParams = new URLSearchParams(params);
 			const urlFull = `${WeatherInfoUrl}?${queryParams}`;
@@ -61,6 +65,7 @@ export const useWeatherStore = defineStore("weather", {
 			const weatherArry = weatherInfoJSON.weather;
 			const weather = weatherArry[0];
 			this.weatherDescription = weather.description;
+			this.weatherTemperature = weatherInfoJSON.main.temp;
 			this.isLoading = false;
 		}
 	}

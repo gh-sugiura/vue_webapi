@@ -9,4 +9,5 @@ export interface State {
     selectedCity: City;
     isLoading: boolean;
     weatherDescription: string;
+    weatherTemperature: number;
 };

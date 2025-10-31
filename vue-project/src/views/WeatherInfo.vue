@@ -33,6 +33,13 @@ const weatherDescription = computed(
         return weatherStore.weatherDescription;
     }
 );
+
+
+const weatherTemperature = computed(
+    (): number => {
+        return Math.round(weatherStore.weatherTemperature);
+    }
+);
 </script>
 
 
@@ -40,7 +47,8 @@ const weatherDescription = computed(
     <p v-if="isLoading">データ取得中...</p>
     <section v-else>
         <h2>{{ selectedCity.name }}の天気</h2>
-        <p>{{ weatherDescription }}</p>
+        <p>天気：{{ weatherDescription }}</p>
+        <p>気温：{{ weatherTemperature }}℃</p>
     </section>
     <p>
         リストに
