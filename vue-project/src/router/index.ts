@@ -1,23 +1,28 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import type { RouteRecordRaw } from "vue-router";
+import CityList from "@/views/CityList.vue";
+
+
+const routeSettings: RouteRecordRaw[] = [
+    {
+        path: "/",
+        name: "CityList",
+        component: CityList,
+    },
+    {
+        path: "/WeatherInfo/:id",
+        name: "WeatherInfo",
+        component: () => {
+            return import("@/views/WeatherInfo.vue");
+        },
+        props: true
+    },
+];
+
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView,
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
-    },
-  ],
-})
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: routeSettings,
+});
 
 export default router
