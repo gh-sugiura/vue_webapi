@@ -14,9 +14,6 @@ export const useWeatherStore = defineStore("weather", {
 		};
 	},
 	
-	getters: {
-	},
-	
 	actions: {
 		prepareCityList() {
 			this.cityList.set("Osaka",
@@ -42,31 +39,42 @@ export const useWeatherStore = defineStore("weather", {
 
 		async reciveWeatherInfo(id: string) {
 			this.isLoading = true;
-			this.selectedCity = this.cityList.get(id) as City;
-			const WeatherInfoUrl = "https://api.openweathermap.org/data/2.5/weather";
-			const params: {
-				lang: string,
-				q: string,
-				appid: string,
-				units: string,
-			} = {
-				lang: "ja",
-				q: this.selectedCity.q,
-				appid: "9d4f3ad1591ee25e7bb8a7429ee2ee11",
-				units: "metric",
-			};
-			const queryParams = new URLSearchParams(params);
-			const urlFull = `${WeatherInfoUrl}?${queryParams}`;
-			console.log(urlFull);
-			const response = await fetch(urlFull, {method: "GET"});
-			const weatherInfoJSON = await response.json();
-			// const response = await axios.get(urlFull);
-			// const weatherInfoJSON = await response.data;
-			const weatherArry = weatherInfoJSON.weather;
-			const weather = weatherArry[0];
-			this.weatherDescription = weather.description;
-			this.weatherTemperature = weatherInfoJSON.main.temp;
-			this.isLoading = false;
-		}
+			try {
+				this.selectedCity = this.cityList.get(id) as City;
+				const WeatherInfoUrl = "https://api.openweathermap.org/data/2.5/weather";
+				const params: {
+					lang: string,
+					q: string,
+					appid: string,
+					units: string,
+				} = {
+					lang: "ja",
+					q: this.selectedCity.q,
+					appid: "9d4f3ad1591ee25e7bb8a7429ee2ee11",
+					units: "metric",
+				};
+				const queryParams = new URLSearchParams(params);
+				const urlFull = `${WeatherInfoUrl}?${queryParams}`;
+				const response = await fetch(urlFull, { method: "GET" });
+				
+				if (!response.ok) {
+					throw new Error(`HTTPエラー: ${response.status}`);
+				}
+
+				const weatherInfoJSON = await response.json();
+				// const response = await axios.get(urlFull);
+				// const weatherInfoJSON = await response.data;
+				const weatherArry = weatherInfoJSON.weather;
+				const weather = weatherArry[0];
+				this.weatherDescription = weather.description;
+				this.weatherTemperature = weatherInfoJSON.main.temp;
+			} catch (error) {
+				console.error("天気情報の取得に失敗しました:", error);
+				this.weatherDescription = "データ取得エラー";
+				this.weatherTemperature = 0;
+			} finally {	
+				this.isLoading = false;
+			}
+		},
 	}
 });
